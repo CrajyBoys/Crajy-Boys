@@ -1,0 +1,373 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>Members — Crajy Boys</title>
+  <style>
+    body{
+      margin:0;
+      font-family: "Segoe UI", Roboto, sans-serif;
+      background: linear-gradient(180deg,#05060a, #071022);
+      color:#e8fff7;
+      min-height:100vh;
+    }
+    header{
+      padding:14px 18px;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      border-bottom:1px solid rgba(255,255,255,0.03);
+    }
+    header a{ color:#bfffe6; text-decoration:none; font-weight:700; }
+
+    .main{
+      padding:18px;
+      max-width:1000px;
+      margin:0 auto;
+    }
+
+    .me{
+      display:flex;
+      gap:18px;
+      align-items:center;
+      margin-bottom:18px;
+    }
+    .me img{
+      width:140px; height:140px; object-fit:cover; border-radius:12px; box-shadow:0 12px 32px rgba(0,0,0,0.6);
+      border:3px solid rgba(0,255,200,0.06);
+    }
+    .me .title{ font-size:20px; font-weight:800; color:#9fffe0; }
+    .me .subtitle{ font-size:14px; color:#cfeee8; opacity:0.9; }
+
+    .members-grid{
+      display:flex;
+      gap:12px;
+      flex-wrap:wrap;
+      margin-top:12px;
+    }
+    .member-card{
+      width:180px;
+      padding:10px;
+      border-radius:10px;
+      background: rgba(255,255,255,0.02);
+      text-align:center;
+    }
+    .member-card img{ width:100%; height:120px; object-fit:cover; border-radius:8px; }
+
+    .join-link{
+      display:inline-block;
+      margin-top:16px;
+      padding:10px 14px;
+      background:linear-gradient(90deg,#00ffd6,#00a9ff);
+      color:#001f17;
+      border-radius:10px;
+      font-weight:800;
+      text-decoration:none;
+      cursor:pointer;
+    }
+
+    /* modal/form styling */
+    .modal-bg{
+      position:fixed;
+      inset:0;
+      display:none;
+      align-items:center;
+      justify-content:center;
+      background:rgba(0,0,0,0.6);
+      z-index:120;
+    }
+    .modal{
+      width:92%;
+      max-width:520px;
+      background:linear-gradient(180deg, #071022, #0b1220);
+      border-radius:12px;
+      padding:14px;
+      box-shadow: 0 18px 48px rgba(0,0,0,0.7);
+      border:1px solid rgba(255,255,255,0.03);
+      color:#dffaf1;
+    }
+    .form-step{ display:none; }
+    .form-step.active{ display:block; }
+    .form-row{ margin-bottom:10px; }
+    input[type="text"], input[type="number"], input[type="file"], input[type="password"]{
+      width:100%; padding:8px 10px; border-radius:8px; border:1px solid rgba(255,255,255,0.06);
+      background: rgba(255,255,255,0.015); color:#e9fff7;
+    }
+    .buttons{ display:flex; gap:10px; justify-content:space-between; margin-top:12px; }
+    button{ padding:8px 12px; border-radius:8px; border:0; cursor:pointer; font-weight:700; }
+    .btn-primary{ background:linear-gradient(90deg,#00ffd6,#00a9ff); color:#003025; }
+    .btn-ghost{ background:rgba(255,255,255,0.02); color:#dffaf1; border:1px solid rgba(255,255,255,0.03); }
+
+    .small{ font-size:13px; opacity:0.9; margin-top:8px; }
+
+    .success{
+      padding:12px;
+      border-radius:8px;
+      background: linear-gradient(90deg, rgba(0,255,150,0.05), rgba(0,255,150,0.02));
+      color:#bfffe0;
+      margin-top:10px;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div style="font-weight:800; font-size:18px; color:#9fffe0;">Crajy Boys — Members</div>
+    <nav>
+      <a href="intex.html">Home</a>
+    </nav>
+  </header>
+
+  <main class="main">
+    <section class="me">
+      <!-- put your real photo as 'myphoto.jpg' in same folder -->
+      <img src="C:\Users\sy4460\Pictures\Screenshots\Screenshot 2025-12-10 215723.png" alt="Head of website" onerror="this.style.display='none'">
+      <div>
+        <div class="title">Head of the website</div>
+        <div class="subtitle">Founder • Crajy Boys</div>
+      </div>
+<div class="member-card">
+    <img src="C:\Users\sy4460\Pictures\Screenshots\Screenshot 2025-12-10 215723.png" class="President Photo">
+    <h3>NK gameing</h3>
+    <h3>President of this web site</h3>
+</div>
+    </section>
+
+    <div>
+      <a class="join-link" id="openJoin">Join / Member Form</a>
+      <div class="small">Click to open the membership form (multi-step).</div>
+    </div>
+
+    <h3 style="margin-top:18px;">Members</h3>
+    <div class="members-grid" id="membersGrid">
+      <!-- initial/placeholder member can appear here -->
+      <div class="member-card">
+        <img src="placeholder-member.jpg" alt="member" onerror="this.style.display='none'">
+        <div style="margin-top:8px; font-weight:800;">Example Member</div>
+      </div>
+    </div>
+  </main>
+
+  <!-- modal multi-step form -->
+  <div class="modal-bg" id="modalBg">
+    <div class="modal" role="dialog" aria-modal="true">
+      <div style="display:flex; justify-content:space-between; align-items:center;">
+        <strong>Member Application</strong>
+        <button id="closeModal" class="btn-ghost">Close</button>
+      </div>
+
+      <!-- step 1 -->
+      <div class="form-step active" id="step1">
+        <div class="form-row">
+          <label>What is your name?</label>
+          <input id="q_name" type="text" placeholder="Your name">
+        </div>
+        <div class="form-row">
+          <label>What is your present age?</label>
+          <input id="q_age" type="number" placeholder="Age">
+        </div>
+
+        <div class="buttons">
+          <button id="toStep2" class="btn-primary">Next</button>
+        </div>
+      </div>
+
+      <!-- step 2 -->
+      <div class="form-step" id="step2">
+        <div class="form-row">
+          <label>Do you have subscribed my yt channel Crajy Boys?</label>
+          <div style="display:flex; gap:12px; margin-top:8px;">
+            <label><input type="radio" name="subscribed" value="yes"> Yes</label>
+            <label><input type="radio" name="subscribed" value="no"> No</label>
+          </div>
+        </div>
+
+        <div class="form-row" id="uploadWrap" style="display:none;">
+          <label>Upload screenshot of subscription page</label>
+          <input id="subScreenshot" type="file" accept="image/*">
+          <div class="small">If uploaded correctly, you'll proceed to payment step.</div>
+        </div>
+
+        <div class="buttons">
+          <button id="backTo1" class="btn-ghost">Previous</button>
+          <button id="checkSub" class="btn-primary">Next</button>
+        </div>
+      </div>
+
+      <!-- step 3: payment -->
+      <div class="form-step" id="step3">
+        <div class="form-row">
+          <label>Payment (₹10 via UPI)</label>
+          <p class="small">UPI: <strong>7307242602@upi</strong> (or the UPI/number you prefer)</p>
+        </div>
+        <div class="form-row">
+          <label>Enter the UPI transaction reference / ID (simulate)</label>
+          <input id="upiRef" placeholder="TXN12345">
+        </div>
+
+        <div class="buttons">
+          <button id="backTo2" class="btn-ghost">Previous</button>
+          <button id="verifyPayment" class="btn-primary">Verify Payment</button>
+        </div>
+      </div>
+
+      <!-- step 4: upload photo & add to members -->
+      <div class="form-step" id="step4">
+        <div class="form-row">
+          <label>Upload your photo (this will show on Members page)</label>
+          <input id="userPhoto" type="file" accept="image/*">
+        </div>
+        <div class="form-row">
+          <label>How should we display your name?</label>
+          <input id="displayName" type="text" placeholder="Your display name">
+        </div>
+
+        <div class="buttons">
+          <button id="backTo3" class="btn-ghost">Previous</button>
+          <button id="finishBtn" class="btn-primary">Finish & Join</button>
+        </div>
+      </div>
+
+      <div id="formMessage" class="small" style="margin-top:10px;"></div>
+    </div>
+  </div>
+
+  <script>
+    // Simple client-side multi-step with simulated checks.
+    const openBtn = document.getElementById('openJoin');
+    const modalBg = document.getElementById('modalBg');
+    const closeBtn = document.getElementById('closeModal');
+
+    openBtn.addEventListener('click', ()=> modalBg.style.display='flex');
+    closeBtn.addEventListener('click', ()=> {
+      modalBg.style.display='none';
+      resetForm();
+    });
+
+    // Step controls
+    function showStep(n){
+      document.querySelectorAll('.form-step').forEach((el,i)=> {
+        el.classList.toggle('active', el.id === 'step' + n);
+      });
+      document.getElementById('formMessage').textContent = '';
+    }
+
+    document.getElementById('toStep2').addEventListener('click', ()=>{
+      const name = document.getElementById('q_name').value.trim();
+      const age = document.getElementById('q_age').value.trim();
+      if(!name || !age){ document.getElementById('formMessage').textContent='Please enter name and age.'; return; }
+      showStep(2);
+    });
+
+    document.getElementById('backTo1').addEventListener('click', ()=> showStep(1));
+    document.getElementById('backTo2').addEventListener('click', ()=> showStep(2));
+    document.getElementById('backTo3').addEventListener('click', ()=> showStep(3));
+
+    // radio logic
+    const radios = document.getElementsByName('subscribed');
+    radios.forEach(r=>{
+      r.addEventListener('change', ()=>{
+        document.getElementById('uploadWrap').style.display = (r.value === 'yes') ? 'block' : 'none';
+      });
+    });
+
+    document.getElementById('checkSub').addEventListener('click', ()=>{
+      const checked = Array.from(radios).find(r=>r.checked);
+      if(!checked){ document.getElementById('formMessage').textContent = 'Please select Yes or No.'; return; }
+      if(checked.value === 'no'){
+        document.getElementById('formMessage').textContent = 'You must subscribe to proceed. Go subscribe and come back.';
+        return;
+      }
+      // user chose yes -> require screenshot file
+      const fileInput = document.getElementById('subScreenshot');
+      if(!fileInput.files || fileInput.files.length === 0){
+        document.getElementById('formMessage').textContent = 'Please upload screenshot of your subscription page.';
+        return;
+      }
+      // basic client-side check for image type
+      const f = fileInput.files[0];
+      if(!f.type.startsWith('image/')){ document.getElementById('formMessage').textContent = 'Upload an image file.'; return; }
+
+      // simulate simple validation and go to payment
+      document.getElementById('formMessage').textContent = 'Screenshot received. Proceed to payment.';
+      showStep(3);
+    });
+
+    // Payment verification (SIMULATED)
+    document.getElementById('verifyPayment').addEventListener('click', ()=>{
+      const ref = document.getElementById('upiRef').value.trim();
+      if(!ref){ document.getElementById('formMessage').textContent = 'Please enter UPI transaction reference.'; return; }
+
+      // NOTE: This is client-side simulation. Real verification requires server-side checks.
+      // We accept any non-empty reference as "paid" for this demo.
+      document.getElementById('formMessage').textContent = 'Payment noted (simulated). Now upload your photo.';
+      showStep(4);
+    });
+
+    // Finish & add member
+    document.getElementById('finishBtn').addEventListener('click', ()=>{
+      const photoInput = document.getElementById('userPhoto');
+      const displayName = document.getElementById('displayName').value.trim();
+      const origName = document.getElementById('q_name').value.trim();
+
+      if(!photoInput.files || photoInput.files.length === 0){ document.getElementById('formMessage').textContent = 'Please upload your photo.'; return; }
+      if(!displayName){ document.getElementById('formMessage').textContent = 'Please enter display name.'; return; }
+
+      const f = photoInput.files[0];
+      if(!f.type.startsWith('image/')){ document.getElementById('formMessage').textContent = 'Photo must be an image file.'; return; }
+
+      // read image and add to members grid
+      const reader = new FileReader();
+      reader.onload = function(e){
+        const imgSrc = e.target.result;
+        const grid = document.getElementById('membersGrid');
+        const card = document.createElement('div');
+        card.className = 'member-card';
+        card.innerHTML = `<img src="${imgSrc}" alt="${displayName}"><div style="margin-top:8px; font-weight:800;">${displayName}</div><div style="font-size:12px; opacity:0.85;">Welcome to crajy world!</div>`;
+        grid.appendChild(card);
+
+        // congratulate
+        document.getElementById('formMessage').innerHTML = `<div class="success">Congratulations <strong>${origName}</strong> — welcome to crajy world! Your profile was added.</div>`;
+        // Save to localStorage so it persists on same browser (simple client-only persistence)
+        saveMemberToStorage({name: displayName, img: imgSrc});
+        // automatically close modal after a short delay
+        setTimeout(()=>{ modalBg.style.display='none'; resetForm(); }, 1600);
+      };
+      reader.readAsDataURL(f);
+    });
+
+    // localStorage helper
+    function saveMemberToStorage(member){
+      const arr = JSON.parse(localStorage.getItem('crajy_members') || '[]');
+      arr.push(member);
+      localStorage.setItem('crajy_members', JSON.stringify(arr));
+    }
+    function loadMembersFromStorage(){
+      const arr = JSON.parse(localStorage.getItem('crajy_members') || '[]');
+      const grid = document.getElementById('membersGrid');
+      arr.forEach(m=>{
+        const card = document.createElement('div');
+        card.className = 'member-card';
+        card.innerHTML = `<img src="${m.img}" alt="${m.name}"><div style="margin-top:8px; font-weight:800;">${m.name}</div><div style="font-size:12px; opacity:0.85;">Welcome to crajy world!</div>`;
+        grid.appendChild(card);
+      });
+    }
+
+    function resetForm(){
+      document.getElementById('q_name').value=''; document.getElementById('q_age').value='';
+      document.getElementsByName('subscribed').forEach(r=>r.checked=false);
+      document.getElementById('subScreenshot').value='';
+      document.getElementById('upiRef').value='';
+      document.getElementById('userPhoto').value='';
+      document.getElementById('displayName').value='';
+      document.getElementById('uploadWrap').style.display='none';
+      showStep(1);
+    }
+
+    // initialize
+    window.addEventListener('load', ()=> {
+      loadMembersFromStorage();
+    });
+  </script>
+</body>
+</html>
