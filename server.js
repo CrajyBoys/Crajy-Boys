@@ -19,10 +19,14 @@ init();
 app.get('/healthz', (req, res) => res.status(200).send('ok'));
 // use PORT from env and start listening
 const PORT = process.env.PORT || 4000;
-const BASE_URL = process.env.BASE_URL || `https://crajy-boys.onrender.com`;
+const BASE_URL = (process.env.BASE_URL || 'https://crajy-boys.onrender.com')
+  .replace(/\/$/, '');
 
-app.listen(PORT, () => { console.log(Server listening on port ${PORT}); console.log(BASE_URL is ${BASE_URL}); });
+app.listen(PORT, () => {
+  console.log(`Server listening on port ${PORT}`);
+  console.log(`BASE_URL is ${BASE_URL}`);
 });
+
 // create transporter: if SMTP config provided use it, otherwise fall back to Ethereal for testing
 async function createTransporter() {
   if (process.env.SMTP_HOST && process.env.SMTP_USER) {
