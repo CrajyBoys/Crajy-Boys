@@ -1,21 +1,28 @@
-// server.js
+// Top of server.js — replace your current top duplicate-requires / app setup with this
 require('dotenv').config();
 const express = require('express');
 const crypto = require('crypto');
-const bcrypt = require('bcrypt');
+const bcrypt = require('bcrypt');        // or 'bcryptjs' if you prefer
 const nodemailer = require('nodemailer');
 const cors = require('cors');
-const { init, run, get, all } = require('./db');
+const { init, run, get, all } = require('./db'); // require db helper(s) once
 
+// create app and middleware
 const app = express();
 app.use(express.json());
 app.use(cors()); // allow your frontend to call this server
 
+// initialize the database tables
 init();
 
-const PORT = process.env.PORT || 4000;
-const BASE_URL = process.env.BASE_URL || `http://localhost:${PORT}`;
+// health check for Render
+app.get('/healthz', (req, res) => res.status(200).send('ok'));
+// use PORT from env and start listening
+const PORT = process.env.PORT || 4000; const BASE_URL = process.env.BASE_URL || 'https://crajy-boys.onrender.com';
+const BASE_URL = process.env.BASE_URL || `https://crajy-boys.onrender.com`;
 
+app.listen(PORT, () => { console.log(Server listening on port ${PORT}); console.log(BASE_URL is ${BASE_URL}); });
+});
 // create transporter: if SMTP config provided use it, otherwise fall back to Ethereal for testing
 async function createTransporter() {
   if (process.env.SMTP_HOST && process.env.SMTP_USER) {
