@@ -18,7 +18,7 @@ init();
 // health check for Render
 app.get('/healthz', (req, res) => res.status(200).send('ok'));
 // use PORT from env and start listening
-const PORT = process.env.PORT || 4000; const BASE_URL = process.env.BASE_URL || 'https://crajy-boys.onrender.com';
+const PORT = process.env.PORT || 4000;
 const BASE_URL = process.env.BASE_URL || `https://crajy-boys.onrender.com`;
 
 app.listen(PORT, () => { console.log(Server listening on port ${PORT}); console.log(BASE_URL is ${BASE_URL}); });
