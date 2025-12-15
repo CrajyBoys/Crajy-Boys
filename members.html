@@ -713,7 +713,21 @@
       loadMembersFromServer();
     });
   </script>
+  <script>
+  const openBtn = document.getElementById('openJoin');
+  const modalBg = document.getElementById('modalBg');
+  const closeBtn = document.getElementById('closeModal');
+
+  openBtn.addEventListener('click', () => {
+    modalBg.style.display = 'flex';
+  });
+
+  closeBtn.addEventListener('click', () => {
+    modalBg.style.display = 'none';
+  });
+</script>
 </body>
 </html>
+
 
 
