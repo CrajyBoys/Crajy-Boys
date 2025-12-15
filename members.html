@@ -1,15 +1,17 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <link rel="icon" type="image/png" href="logo.png">
   <meta charset="utf-8"/>
   <meta name="viewport" content="width=device-width,initial-scale=1"/>
   <title>Members — Crajy Boys</title>
+
+  <link rel="icon" type="image/png" href="logo.png">
+
   <style>
     body{
       margin:0;
-      font-family: "Segoe UI", Roboto, sans-serif;
-      background: linear-gradient(180deg,#05060a, #071022);
+      font-family:"Segoe UI", Roboto, sans-serif;
+      background:linear-gradient(180deg,#05060a,#071022);
       color:#e8fff7;
       min-height:100vh;
     }
@@ -18,43 +20,10 @@
       display:flex;
       justify-content:space-between;
       align-items:center;
-      border-bottom:1px solid rgba(255,255,255,0.03);
+      border-bottom:1px solid rgba(255,255,255,0.05);
     }
-    header a{ color:#bfffe6; text-decoration:none; font-weight:700; }
-
-    .main{
-      padding:18px;
-      max-width:1000px;
-      margin:0 auto;
-    }
-
-    .me{
-      display:flex;
-      gap:18px;
-      align-items:center;
-      margin-bottom:18px;
-    }
-    .me img{
-      width:140px; height:140px; object-fit:cover; border-radius:12px; box-shadow:0 12px 32px rgba(0,0,0,0.6);
-      border:3px solid rgba(0,255,200,0.06);
-    }
-    .me .title{ font-size:20px; font-weight:800; color:#9fffe0; }
-    .me .subtitle{ font-size:14px; color:#cfeee8; opacity:0.9; }
-
-    .members-grid{
-      display:flex;
-      gap:12px;
-      flex-wrap:wrap;
-      margin-top:12px;
-    }
-    .member-card{
-      width:220px;
-      padding:10px;
-      border-radius:10px;
-      background: rgba(255,255,255,0.02);
-      text-align:left;
-    }
-    .member-card img{ width:100%; height:120px; object-fit:cover; border-radius:8px; }
+    header a{color:#bfffe6;text-decoration:none;font-weight:700;}
+    .main{padding:18px;max-width:1000px;margin:0 auto;}
 
     .join-link{
       display:inline-block;
@@ -64,11 +33,19 @@
       color:#001f17;
       border-radius:10px;
       font-weight:800;
-      text-decoration:none;
       cursor:pointer;
+      text-decoration:none;
     }
 
-    /* modal/form styling */
+    .members-grid{display:flex;gap:12px;flex-wrap:wrap;margin-top:16px;}
+    .member-card{
+      width:220px;
+      padding:10px;
+      border-radius:10px;
+      background:rgba(255,255,255,0.03);
+    }
+
+    /* Modal */
     .modal-bg{
       position:fixed;
       inset:0;
@@ -76,659 +53,204 @@
       align-items:center;
       justify-content:center;
       background:rgba(0,0,0,0.6);
-      z-index:120;
+      z-index:100;
     }
     .modal{
       width:92%;
       max-width:520px;
-      background:linear-gradient(180deg, #071022, #0b1220);
+      background:linear-gradient(180deg,#071022,#0b1220);
       border-radius:12px;
-      padding:14px;
-      box-shadow: 0 18px 48px rgba(0,0,0,0.7);
-      border:1px solid rgba(255,255,255,0.03);
-      color:#dffaf1;
-      position:relative;
+      padding:16px;
     }
-    .form-step{ display:none; }
-    .form-step.active{ display:block; }
-    .form-row{ margin-bottom:10px; position:relative; }
-    input[type="text"], input[type="number"], input[type="file"], input[type="password"], input[type="email"]{
-      width:100%; padding:8px 10px; border-radius:8px; border:1px solid rgba(255,255,255,0.06);
-      background: rgba(255,255,255,0.015); color:#e9fff7;
-    }
-    input[readonly] { cursor:pointer; }
-    .buttons{ display:flex; gap:10px; justify-content:space-between; margin-top:12px; }
-    button{ padding:8px 12px; border-radius:8px; border:0; cursor:pointer; font-weight:700; }
-    .btn-primary{ background:linear-gradient(90deg,#00ffd6,#00a9ff); color:#003025; }
-    .btn-ghost{ background:rgba(255,255,255,0.02); color:#dffaf1; border:1px solid rgba(255,255,255,0.03); }
 
-    .small{ font-size:13px; opacity:0.9; margin-top:8px; }
+    .form-step{display:none;}
+    .form-step.active{display:block;}
 
-    .success{
-      padding:12px;
-      border-radius:8px;
-      background: linear-gradient(90deg, rgba(0,255,150,0.05), rgba(0,255,150,0.02));
-      color:#bfffe0;
-      margin-top:10px;
-    }
-    .error{ color:#ffcccb; font-size:13px; margin-top:6px; }
-
-    /* stepped picker styling */
-    .picker {
+    input{
       width:100%;
-      background: rgba(255,255,255,0.02);
+      padding:8px 10px;
       border-radius:8px;
-      padding:8px;
-      margin-top:8px;
-      user-select:none;
-      display:none;
-    }
-    .picker.open { display:block; }
-    .picker-header{
-      display:flex;
-      justify-content:space-between;
-      align-items:center;
-      gap:8px;
-      margin-bottom:8px;
-    }
-    .picker-header .back {
-      padding:6px 8px;
-      font-weight:700;
-      border-radius:6px;
+      border:1px solid rgba(255,255,255,0.1);
       background:rgba(255,255,255,0.02);
-      color:#dffaf1;
-      border:1px solid rgba(255,255,255,0.03);
-      cursor:pointer;
-    }
-    .picker-title{ font-weight:800; }
-    .picker-grid{
-      display:grid;
-      grid-template-columns:repeat(7, 1fr);
-      gap:6px;
-      text-align:center;
-    }
-    .picker-item{
-      padding:8px 6px;
-      border-radius:6px;
-      background:transparent;
-      color:#cfeee8;
-      font-size:13px;
-      cursor:pointer;
-    }
-    .picker-item.inactive{ opacity:0.25; cursor:default; }
-    .picker-item.selected{
-      background:linear-gradient(90deg,#00ffd6,#00a9ff);
-      color:#002a20;
-      font-weight:800;
+      color:#e9fff7;
+      margin-top:4px;
     }
 
-    /* month list (4 columns) and year list (3 columns) */
-    .months-grid{ display:grid; grid-template-columns:repeat(4,1fr); gap:6px; }
-    .years-grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:6px; max-height:220px; overflow:auto; padding-right:4px; }
+    .buttons{display:flex;justify-content:space-between;margin-top:14px;}
+    button{
+      padding:8px 14px;
+      border-radius:8px;
+      border:none;
+      cursor:pointer;
+      font-weight:700;
+    }
+    .btn-primary{background:linear-gradient(90deg,#00ffd6,#00a9ff);color:#003025;}
+    .btn-ghost{background:rgba(255,255,255,0.05);color:#dffaf1;}
+
+    .small{font-size:13px;margin-top:8px;}
+    .error{color:#ffb3b3;}
+    .success{color:#9fffe0;}
   </style>
 </head>
+
 <body>
-  <header>
-    <div style="font-weight:800; font-size:18px; color:#9fffe0;">Crajy Boys — Members</div>
-    <nav>
-      <a href="index.html">Home</a>
-    </nav>
-  </header>
 
-  <main class="main">
-    <section class="me">
-      <img src="logo.png" alt="Head of website" onerror="this.style.display='none'">
-      <div>
-        <div class="title">Head of the website</div>
-        <div class="subtitle">Founder • Crajy Boys</div>
-      </div>
-      <div class="member-card" style="margin-left:18px;">
-        <img src="Nitish.png" alt="President Photo">
-        <h3 style="margin:6px 0 0 0;">NK gameing</h3>
-        <div style="font-size:13px; opacity:0.9;">President of this web site</div>
-      </div>
-    </section>
+<header>
+  <div style="font-weight:800;color:#9fffe0;">Crajy Boys — Members</div>
+  <a href="index.html">Home</a>
+</header>
 
-    <div>
-      <a class="join-link" id="openJoin">Join / Member Form</a>
-      <div class="small">Click to open the membership form (multi-step).</div>
+<main class="main">
+  <a id="openJoin" class="join-link">Join / Member Form</a>
+
+  <h3 style="margin-top:20px;">Members</h3>
+  <div class="members-grid" id="membersGrid"></div>
+</main>
+
+<!-- MODAL -->
+<div class="modal-bg" id="modalBg">
+  <div class="modal">
+
+    <div style="display:flex;justify-content:space-between;align-items:center;">
+      <strong>Member Application</strong>
+      <button id="closeModal" class="btn-ghost">Close</button>
     </div>
 
-    <h3 style="margin-top:18px;">Members</h3>
-    <div class="members-grid" id="membersGrid">
-      <!-- initial/placeholder member can appear here -->
+    <!-- STEP 1 -->
+    <div class="form-step active" id="step1">
+      <label>Name</label>
+      <input id="q_name" type="text">
+
+      <label style="margin-top:8px;">Date of Birth</label>
+      <input id="q_dob" type="date">
+
+      <div class="small error" id="step1Msg"></div>
+
+      <div class="buttons">
+        <div></div>
+        <button id="toStep2" class="btn-primary">Next</button>
+      </div>
     </div>
-  </main>
 
-  <!-- modal multi-step form -->
-  <div class="modal-bg" id="modalBg">
-    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
-      <div style="display:flex; justify-content:space-between; align-items:center;">
-        <strong id="modalTitle">Member Application</strong>
-        <button id="closeModal" class="btn-ghost">Close</button>
+    <!-- STEP 2 -->
+    <div class="form-step" id="step2">
+      <label>Email</label>
+      <input id="q_email" type="email">
+
+      <div id="step2Msg" class="small error"></div>
+      <div id="emailVerificationArea" class="small"></div>
+
+      <div class="buttons">
+        <button id="backTo1" class="btn-ghost">Previous</button>
+        <button id="toStep3" class="btn-primary">Next</button>
       </div>
-
-      <!-- step 1: name + DOB (stepped: day -> month -> year) -->
-      <div class="form-step active" id="step1">
-        <div class="form-row">
-          <label for="q_name">What is your name?</label>
-          <input id="q_name" type="text" placeholder="Your name" autocomplete="name">
-        </div>
-
-        <div class="form-row" style="z-index:130;">
-          <label for="q_dob_display">Date of Birth (click to pick)</label>
-          <input id="q_dob_display" type="text" placeholder="Select DOB" readonly aria-readonly="true" />
-          <!-- hidden store for iso value -->
-          <input id="q_dob_store" type="hidden" />
-          <!-- stepped picker -->
-          <div class="picker" id="dobPicker" aria-hidden="true">
-            <div class="picker-header">
-              <div>
-                <button class="back" id="pickerBack" type="button" title="Back">&larr;</button>
-              </div>
-              <div class="picker-title" id="pickerTitle">Select Day</div>
-              <div style="width:40px"></div>
-            </div>
-
-            <!-- day view: numbers 1..31 arranged like calendar (Sun-Sat header omitted here) -->
-            <div id="dayView" class="picker-grid" aria-hidden="false"></div>
-
-            <!-- month view -->
-            <div id="monthView" class="months-grid" style="display:none;" aria-hidden="true"></div>
-
-            <!-- year view -->
-            <div id="yearView" class="years-grid" style="display:none;" aria-hidden="true"></div>
-
-            <div id="pickerMessage" class="small" style="margin-top:8px;"></div>
-          </div>
-        </div>
-
-        <div class="buttons">
-          <div></div>
-          <button id="toStep2" class="btn-primary">Next</button>
-        </div>
-      </div>
-
-      <!-- step 2: email + verification -->
-      <div class="form-step" id="step2">
-        <div class="form-row">
-          <label for="q_email">Email address</label>
-          <input id="q_email" type="email" placeholder="you@example.com" autocomplete="email">
-        </div>
-
-        <!-- server verification UI area -->
-        <div id="emailVerificationArea" class="small" style="margin-top:8px;"></div>
-
-        <div class="buttons">
-          <button id="backTo1" class="btn-ghost">Previous</button>
-          <button id="toStep3" class="btn-primary">Next</button>
-        </div>
-      </div>
-
-      <!-- step 3: password & finish -->
-      <div class="form-step" id="step3">
-        <div class="form-row">
-          <label for="q_password">Create a password</label>
-          <input id="q_password" type="password" placeholder="Password (min 12 chars)">
-          <div class="small">Password must be at least 12 characters and include an uppercase letter, a number, and a special symbol.</div>
-        </div>
-
-        <div class="buttons">
-          <button id="backTo2" class="btn-ghost">Previous</button>
-          <button id="finishBtn" class="btn-primary">Finish & Join</button>
-        </div>
-        <div id="formMessage" class="small" style="margin-top:10px;"></div>
-      </div>
-
     </div>
+
+    <!-- STEP 3 -->
+    <div class="form-step" id="step3">
+      <label>Password</label>
+      <input id="q_password" type="password">
+
+      <div class="small error" id="step3Msg"></div>
+
+      <div class="buttons">
+        <button id="backTo2" class="btn-ghost">Previous</button>
+        <button id="finishBtn" class="btn-primary">Finish</button>
+      </div>
+    </div>
+
   </div>
+</div>
 
-  <script>
-    // API base (set to your server address)
-    const API_BASE = 'https://crajy-boys.onrender.com'.replace(/\/$/, '');
+<script>
+const API_BASE = 'https://crajy-boys.onrender.com';
 
-    // UI elements
-    const openBtn = document.getElementById('openJoin');
-    const modalBg = document.getElementById('modalBg');
-    const closeBtn = document.getElementById('closeModal');
+const modalBg = document.getElementById('modalBg');
 
-    openBtn.addEventListener('click', ()=> modalBg.style.display='flex');
-    closeBtn.addEventListener('click', ()=> {
-      modalBg.style.display='none';
-      resetForm();
-    });
+function showStep(n){
+  document.querySelectorAll('.form-step').forEach(s=>{
+    s.classList.toggle('active', s.id === 'step'+n);
+  });
+}
 
-    function showStep(n){
-      document.querySelectorAll('.form-step').forEach(el=>{
-        el.classList.toggle('active', el.id === 'step' + n);
-      });
-      document.getElementById('formMessage').textContent = '';
-    }
+document.getElementById('openJoin').onclick = ()=> modalBg.style.display='flex';
+document.getElementById('closeModal').onclick = ()=> modalBg.style.display='none';
 
-    // --- Stepped DOB picker implementation ---
-    const dobDisplay = document.getElementById('q_dob_display');
-    const dobStore = document.getElementById('q_dob_store');
-    const dobPicker = document.getElementById('dobPicker');
-    const pickerTitle = document.getElementById('pickerTitle');
-    const pickerBack = document.getElementById('pickerBack');
-    const dayView = document.getElementById('dayView');
-    const monthView = document.getElementById('monthView');
-    const yearView = document.getElementById('yearView');
-    const pickerMessage = document.getElementById('pickerMessage');
+document.getElementById('toStep2').onclick = ()=>{
+  const name = q_name.value.trim();
+  const dob = q_dob.value;
+  const msg = step1Msg;
+  msg.textContent='';
 
-    const monthNames = ["January","February","March","April","May","June","July","August","September","October","November","December"];
-    const today = new Date();
-    let pickStep = 1; // 1=day,2=month,3=year
-    let selDay = null;    // 1..31
-    let selMonth = null;  // 1..12
-    let selYear = null;
+  if(!name || !dob){
+    msg.textContent='Please enter name and DOB.';
+    return;
+  }
+  showStep(2);
+};
 
-    function renderDays(){
-      dayView.innerHTML = '';
-      pickerTitle.textContent = 'Select Day';
-      for(let d=1; d<=31; d++){
-        const btn = document.createElement('div');
-        btn.className = 'picker-item';
-        btn.textContent = d;
-        if(selDay === d) btn.classList.add('selected');
-        btn.addEventListener('click', ()=> {
-          selDay = d;
-          openMonthView();
-        });
-        dayView.appendChild(btn);
-      }
-      dayView.style.display = 'grid';
-      monthView.style.display = 'none';
-      yearView.style.display = 'none';
-      pickerMessage.textContent = '';
-      pickStep = 1;
-    }
+document.getElementById('backTo1').onclick = ()=> showStep(1);
 
-    function renderMonths(){
-      monthView.innerHTML = '';
-      pickerTitle.textContent = 'Select Month';
-      monthNames.forEach((m, idx)=>{
-        const btn = document.createElement('div');
-        btn.className = 'picker-item';
-        btn.textContent = m;
-        if(selMonth === idx+1) btn.classList.add('selected');
-        btn.addEventListener('click', ()=> {
-          selMonth = idx+1;
-          openYearView();
-        });
-        monthView.appendChild(btn);
-      });
-      dayView.style.display = 'none';
-      monthView.style.display = 'grid';
-      yearView.style.display = 'none';
-      pickerMessage.textContent = '';
-      pickStep = 2;
-    }
+document.getElementById('toStep3').onclick = async ()=>{
+  const email = q_email.value.trim();
+  step2Msg.textContent='';
 
-    function renderYears(startYear = 1900, endYear = today.getFullYear()){
-      yearView.innerHTML = '';
-      pickerTitle.textContent = 'Select Year';
-      for(let y = endYear; y >= startYear; y--){
-        const btn = document.createElement('div');
-        btn.className = 'picker-item';
-        btn.textContent = y;
-        if(selYear === y) btn.classList.add('selected');
-        btn.addEventListener('click', ()=> {
-          selYear = y;
-          finalizeDob();
-        });
-        yearView.appendChild(btn);
-      }
-      dayView.style.display = 'none';
-      monthView.style.display = 'none';
-      yearView.style.display = 'grid';
-      pickerMessage.textContent = '';
-      pickStep = 3;
-    }
+  if(!email){
+    step2Msg.textContent='Please enter your email.';
+    return;
+  }
 
-    function isValidDate(y, m, d){
-      if(!y || !m || !d) return false;
-      const dt = new Date(y, m-1, d);
-      return dt.getFullYear() === y && dt.getMonth() === (m-1) && dt.getDate() === d;
-    }
+  step2Msg.textContent='Sending verification email...';
 
-    function openMonthView(){ renderMonths(); }
-
-    function openYearView(){
-      const maxAge = 120;
-      const minAge = 1;
-      const currentYear = today.getFullYear();
-      const startYear = currentYear - maxAge;
-      const endYear = currentYear - minAge;
-      renderYears(startYear, endYear);
-    }
-
-    function finalizeDob(){
-      if(!isValidDate(selYear, selMonth, selDay)){
-        pickerMessage.textContent = 'Invalid date for selected month/year. Please pick a different day.';
-        renderDays();
-        return;
-      }
-      const iso = toIso(selYear, selMonth, selDay);
-      dobStore.value = iso;
-      dobDisplay.value = `${String(selDay).padStart(2,'0')} ${monthNames[selMonth-1]} ${selYear}`;
-      closePicker();
-    }
-
-    function toIso(y,m,d){
-      return `${y}-${String(m).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
-    }
-
-    function openPicker(){
-      dobPicker.classList.add('open');
-      dobPicker.setAttribute('aria-hidden','false');
-      if(!selDay && !selMonth && !selYear){
-        renderDays();
-      } else if(selDay && !selMonth){
-        renderMonths();
-      } else if(selDay && selMonth && !selYear){
-        openYearView();
-      } else {
-        renderDays();
-      }
-      setTimeout(()=> document.addEventListener('click', outsidePickerClick));
-    }
-
-    function closePicker(){
-      dobPicker.classList.remove('open');
-      dobPicker.setAttribute('aria-hidden','true');
-      document.removeEventListener('click', outsidePickerClick);
-    }
-
-    function togglePicker(){
-      if(dobPicker.classList.contains('open')) closePicker();
-      else openPicker();
-    }
-
-    function outsidePickerClick(e){
-      const target = e.target;
-      if(!dobPicker.contains(target) && target !== dobDisplay){
-        closePicker();
-      }
-    }
-
-    pickerBack.addEventListener('click', ()=>{
-      if(pickStep === 1) closePicker();
-      else if(pickStep === 2) renderDays();
-      else if(pickStep === 3) renderMonths();
-    });
-
-    dobDisplay.addEventListener('click', (e)=> { e.stopPropagation(); togglePicker(); });
-    dobDisplay.addEventListener('focus', (e)=> { openPicker(); });
-
-    document.addEventListener('keydown', (e)=>{
-      if(e.key === 'Escape') {
-        closePicker();
-      }
-    });
-
-    renderDays();
-
-    // --- Backend integration for registration & verification ---
-    const emailVerificationArea = document.getElementById('emailVerificationArea');
-
-    async function postRegisterInit(name, email, dob){
-      try {
-        const res = await fetch(`${API_BASE}/register-init`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ name, email, dob })
-        });
-        const data = await res.json();
-        if(!res.ok) throw new Error(data.error || 'Failed to start registration');
-        return data;
-      } catch (err){
-        throw err;
-      }
-    }
-
-    async function fetchMembers(){
-      try {
-        const res = await fetch(`${API_BASE}/members`);
-        if(!res.ok) throw new Error('Failed to fetch members');
-        const data = await res.json();
-        return data.members || [];
-      } catch (err){
-        console.error(err);
-        return [];
-      }
-    }
-
-    // check whether the given email appears in verified /members list
-    async function isEmailVerifiedOnServer(email){
-      const members = await fetchMembers();
-      return members.some(m => String(m.email).toLowerCase() === String(email).toLowerCase());
-    }
-
-    // Step handlers
-    document.getElementById('toStep2').addEventListener('click', async ()=>{
-      const name = document.getElementById('q_name').value.trim();
-      const dob = dobStore.value.trim();
-      if(!name || !dob){
-        document.getElementById('formMessage').textContent = 'Please enter name and pick your DOB.';
-        return;
-      }
-      const age = computeAge(dob);
-      if(age <= 0 || age > 120){
-        document.getElementById('formMessage').textContent = 'Please select a valid date of birth.';
-        return;
-      }
-      // proceed to email step
-      showStep(2);
-    });
-
-    document.getElementById('backTo1').addEventListener('click', ()=> showStep(1));
-
-    document.getElementById('toStep3').addEventListener('click', async ()=>{
-      const email = document.getElementById('q_email').value.trim();
-      const name = document.getElementById('q_name').value.trim();
-      const dob = dobStore.value.trim();
-
-      if(!email){
-        document.getElementById('formMessage').textContent = 'Please enter your email.';
-        return;
-      }
-      const emailRe = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-      if(!emailRe.test(email)){
-        document.getElementById('formMessage').textContent = 'Please enter a valid email address.';
-        return;
-      }
-
-      // call backend to initiate registration and send verification email
-      document.getElementById('formMessage').textContent = 'Contacting server to send verification email...';
-      try {
-        const resp = await postRegisterInit(name, email, dob);
-        // show verification instructions and preview link if provided
-        let html = `<div>Verification email sent to <strong>${escapeHtml(email)}</strong>. Please open the email and click the verification link to verify your address.</div>`;
-        if(resp.preview){
-          html += `<div style="margin-top:8px;"><a href="${resp.preview}" target="_blank" rel="noopener">Open email preview (Ethereal)</a></div>`;
-        }
-        html += `<div style="margin-top:8px;"><button id="iVerifiedBtn" class="btn-primary">I clicked the verification link</button> <button id="pollVerifyBtn" class="btn-ghost">Auto-check verification (5 attempts)</button></div>`;
-        emailVerificationArea.innerHTML = html;
-        document.getElementById('formMessage').textContent = '';
-
-        // attach handlers
-        document.getElementById('iVerifiedBtn').addEventListener('click', async ()=>{
-          document.getElementById('formMessage').textContent = 'Checking verification status...';
-          const ok = await isEmailVerifiedOnServer(email);
-          if(ok){
-            document.getElementById('formMessage').innerHTML = `<div class="success">Email verified. Proceed to create a password.</div>`;
-            // small delay then next step
-            setTimeout(()=> showStep(3), 700);
-            emailVerificationArea.innerHTML = '';
-          } else {
-            document.getElementById('formMessage').textContent = 'Not verified yet. Please click the link in the email and then press the button again.';
-          }
-        });
-
-        document.getElementById('pollVerifyBtn').addEventListener('click', async ()=>{
-          document.getElementById('formMessage').textContent = 'Auto-checking verification...';
-          let attempts = 0;
-          let verified = false;
-          while(attempts < 5 && !verified){
-            // eslint-disable-next-line no-await-in-loop
-            verified = await isEmailVerifiedOnServer(email);
-            if(verified) break;
-            // eslint-disable-next-line no-await-in-loop
-            await new Promise(r => setTimeout(r, 3000));
-            attempts++;
-          }
-          if(verified){
-            document.getElementById('formMessage').innerHTML = `<div class="success">Email verified. Proceed to create a password.</div>`;
-            setTimeout(()=> showStep(3), 700);
-            emailVerificationArea.innerHTML = '';
-          } else {
-            document.getElementById('formMessage').textContent = 'Still not verified. Please open your email and click the verification link, then try again.';
-          }
-        });
-
-      } catch (err) {
-        console.error(err);
-        document.getElementById('formMessage').textContent = 'Failed to start verification: ' + (err.message || err);
-      }
-    });
-
-    document.getElementById('backTo2').addEventListener('click', ()=> showStep(2));
-
-    // Finish & add member after password validation: calls server /complete-registration
-    async function postCompleteRegistration(email, password){
-      const res = await fetch(`${API_BASE}/complete-registration`, {
-        method: 'POST',
-        headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify({ email, password })
-      });
-      return res.json();
-    }
-
-    document.getElementById('finishBtn').addEventListener('click', async ()=>{
-      const pwd = document.getElementById('q_password').value || '';
-      const name = document.getElementById('q_name').value.trim();
-      const email = document.getElementById('q_email').value.trim();
-
-      const minLen = 12;
-      const hasUpper = /[A-Z]/.test(pwd);
-      const hasNumber = /\d/.test(pwd);
-      const hasSpecial = /[!@#$%^&*(),.?":{}|<>_\-\\\/\[\];'`~+=]/.test(pwd);
-
-      if(pwd.length < minLen){
-        document.getElementById('formMessage').textContent = 'Password must be at least ' + minLen + ' characters.';
-        return;
-      }
-      if(!hasUpper || !hasNumber || !hasSpecial){
-        document.getElementById('formMessage').textContent = 'Password must include an uppercase letter, a number and a special symbol.';
-        return;
-      }
-
-      document.getElementById('formMessage').textContent = 'Completing registration...';
-      try {
-        const res = await postCompleteRegistration(email, pwd);
-        if(res && res.ok){
-          document.getElementById('formMessage').innerHTML = `<div class="success">Congratulations <strong>${escapeHtml(name)}</strong> — your profile was added.</div>`;
-          // refresh members list from server and add to UI
-          setTimeout(async ()=> {
-            await loadMembersFromServer();
-            modalBg.style.display='none';
-            resetForm();
-          }, 900);
-        } else {
-          document.getElementById('formMessage').textContent = res.error || 'Failed to complete registration';
-        }
-      } catch (err){
-        console.error(err);
-        document.getElementById('formMessage').textContent = 'Error completing registration: ' + (err.message || err);
-      }
-    });
-
-    // compute age from ISO DOB (YYYY-MM-DD)
-    function computeAge(iso){
-      if(!iso) return 0;
-      const [y,m,d] = iso.split('-').map(Number);
-      const dob = new Date(y,m-1,d);
-      const now = new Date();
-      let age = now.getFullYear() - dob.getFullYear();
-      const mNow = now.getMonth();
-      const dNow = now.getDate();
-      if(mNow < dob.getMonth() || (mNow === dob.getMonth() && dNow < dob.getDate())) age--;
-      return age;
-    }
-
-    // members UI population (fetch from server)
-    async function loadMembersFromServer(){
-      const grid = document.getElementById('membersGrid');
-      grid.innerHTML = ''; // clear
-      // keep the example placeholder if none returned
-      try {
-        const members = await fetchMembers();
-        if(!members || members.length === 0){
-          grid.innerHTML = `<div class="member-card">
-            <div style="margin-top:4px; font-weight:800;">Example Member</div>
-            <div style="font-size:12px; opacity:0.85;">example@example.com</div>
-          </div>`;
-          return;
-        }
-        members.forEach(m=>{
-          addMemberToGrid(m);
-        });
-      } catch (err){
-        console.error(err);
-      }
-    }
-
-    function addMemberToGrid(m){
-      const grid = document.getElementById('membersGrid');
-      const card = document.createElement('div');
-      card.className = 'member-card';
-      card.innerHTML = `<div style="margin-top:4px; font-weight:800;">${escapeHtml(m.name)}</div>
-                        <div style="font-size:12px; opacity:0.85;">${escapeHtml(m.email)}</div>`;
-      grid.appendChild(card);
-    }
-
-    function resetForm(){
-      document.getElementById('q_name').value='';
-      dobStore.value=''; dobDisplay.value='';
-      selDay = selMonth = selYear = null;
-      renderDays();
-      closePicker();
-      document.getElementById('q_email').value='';
-      document.getElementById('q_password').value='';
-      document.getElementById('formMessage').textContent='';
-      emailVerificationArea.innerHTML = '';
-      showStep(1);
-    }
-
-    // simple sanitize for inserted text
-    function escapeHtml(str){
-      return String(str || '').replace(/[&<>"']/g, function(m){
-        return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m];
-      });
-    }
-
-    // initialize
-    window.addEventListener('load', ()=> {
-      loadMembersFromServer();
-    });
-  </script>
-  <script>
-  const openBtn = document.getElementById('openJoin');
-  const modalBg = document.getElementById('modalBg');
-  const closeBtn = document.getElementById('closeModal');
-
-  openBtn.addEventListener('click', () => {
-    modalBg.style.display = 'flex';
+  const res = await fetch(API_BASE+'/register-init',{
+    method:'POST',
+    headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({
+      name:q_name.value,
+      email,
+      dob:q_dob.value
+    })
   });
 
-  closeBtn.addEventListener('click', () => {
-    modalBg.style.display = 'none';
+  if(!res.ok){
+    step2Msg.textContent='Failed to send verification email.';
+    return;
+  }
+
+  emailVerificationArea.innerHTML =
+    '<div class="success">Verification email sent. After verifying, click Next again.</div>';
+
+  showStep(3);
+};
+
+document.getElementById('backTo2').onclick = ()=> showStep(2);
+
+document.getElementById('finishBtn').onclick = async ()=>{
+  const pwd = q_password.value;
+  step3Msg.textContent='';
+
+  if(pwd.length < 12){
+    step3Msg.textContent='Password must be at least 12 characters.';
+    return;
+  }
+
+  const res = await fetch(API_BASE+'/complete-registration',{
+    method:'POST',
+    headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({
+      email:q_email.value,
+      password:pwd
+    })
   });
+
+  if(res.ok){
+    step3Msg.innerHTML='<span class="success">Registration complete!</span>';
+    setTimeout(()=>location.reload(),1200);
+  }else{
+    step3Msg.textContent='Registration failed.';
+  }
+};
 </script>
+
 </body>
 </html>
-
-
-
-
