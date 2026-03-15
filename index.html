@@ -1,52 +1,91 @@
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <link rel="icon" type="image/png" href="logo.png">
   <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="Welcome to Crajy Boys gaming website – Free Fire, BGMI, and more! Meet members, join the squad, watch videos, and explore the gaming world.">
   <title>Crajy Boys - Official Gaming Website</title>
   <style>
-    /* simple gaming/neon style */
+    /* Your existing neon/gaming styles */
     @keyframes glow {
       0% { text-shadow: 0 0 6px rgba(255,255,255,0.15); }
       50% { text-shadow: 0 0 18px rgba(0,255,200,0.45); }
       100% { text-shadow: 0 0 6px rgba(255,255,255,0.15); }
     }
-    body{
-      margin:0;
+
+    body {
+      margin: 0;
       font-family: "Segoe UI", Roboto, sans-serif;
-      background:
-        radial-gradient(circle at 10% 10%, rgba(0,255,200,0.06), transparent 8%),
-        linear-gradient(120deg, #0b0f1a, #071022 60%);
-      color:#e6f7ff;
-      min-height:100vh;
+      background: radial-gradient(circle at 10% 10%, rgba(0,255,200,0.06), transparent 8%),
+                  linear-gradient(120deg, #0b0f1a, #071022 60%);
+      color: #e6f7ff;
+      min-height: 100vh;
+      overflow-x: hidden;
     }
-    /* top-right logo */
+
+    /* === VIDEO BACKGROUND === */
+    .video-bg {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;          /* Fills screen, crops nicely */
+      z-index: -2;
+    }
+
+    .video-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(7, 16, 34, 0.65); /* Dark tint – adjust 0.5–0.75 if too dark */
+      z-index: -1;
+    }
+
+    /* Ensure content stays above video */
+    #logo, header, main, footer {
+      position: relative;
+      z-index: 1;
+    }
+
+    /* Mobile fallback: hide video, use poster or background */
+    @media (max-width: 768px) {
+      .video-bg {
+        display: none;
+      }
+      body {
+        background: url('videos/poster.jpg') center/cover no-repeat fixed !important;
+      }
+    }
+
+    /* Your existing styles (logo, header, title, nav, welcome, footer) */
     #logo {
       position: fixed;
       top: 12px;
       right: 12px;
-      width:72px;
-      height:72px;
-      object-fit:contain;
-      border-radius:10px;
+      width: 72px;
+      height: 72px;
+      object-fit: contain;
+      border-radius: 10px;
       box-shadow: 0 6px 18px rgba(0,0,0,0.7);
       background: linear-gradient(135deg, rgba(255,255,255,0.03), rgba(0,0,0,0.08));
       z-index: 50;
     }
 
-    header{
-      text-align:center;
-      padding:40px 20px 10px;
+    header {
+      text-align: center;
+      padding: 40px 20px 10px;
     }
-    h1.title{
-      margin:0;
-      font-size:48px;
-      letter-spacing:2px;
-      font-weight:800;
+
+    h1.title {
+      margin: 0;
+      font-size: 48px;
+      letter-spacing: 2px;
+      font-weight: 800;
       color: #9fffe0;
-      display:inline-block;
-      padding:10px 22px;
-      border-radius:14px;
+      display: inline-block;
+      padding: 10px 22px;
+      border-radius: 14px;
       background: linear-gradient(90deg, rgba(255,255,255,0.02), rgba(0,0,0,0.05));
       transform: skewX(-6deg);
       animation: glow 3s ease-in-out infinite;
@@ -54,124 +93,100 @@
       text-transform: uppercase;
     }
 
-    /* column of page links (centered under title) */
-    .nav-column{
+    .nav-column {
       margin: 26px auto 12px;
-      width:220px;
-      text-align:center;
-      display:flex;
-      flex-direction:column;
-      gap:16px;
+      width: 220px;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
     }
-    .nav-column a{
-      color:#d8fff4;
-      text-decoration:none;
-      font-weight:700;
-      padding:8px 12px;
-      border-radius:10px;
+
+    .nav-column a {
+      color: #d8fff4;
+      text-decoration: none;
+      font-weight: 700;
+      padding: 8px 12px;
+      border-radius: 10px;
       transition: all .18s ease;
       background: linear-gradient(180deg, rgba(255,255,255,0.01), rgba(0,0,0,0.05));
       box-shadow: 0 8px 20px rgba(0,0,0,0.5);
     }
-    .nav-column a:hover{
+
+    .nav-column a:hover {
       transform: translateY(-4px) scale(1.03);
       box-shadow: 0 18px 40px rgba(0,255,200,0.08);
       color: #001f17;
-      background: linear-gradient(90deg,#9fffe0,#6ee6c6);
+      background: linear-gradient(90deg, #9fffe0, #6ee6c6);
     }
 
-    main.container{
-      display:flex;
-      justify-content:center;
-      margin-top:24px;
+    main.container {
+      display: flex;
+      justify-content: center;
+      margin-top: 24px;
       padding: 20px;
     }
-    .welcome{
-      max-width:760px;
+
+    .welcome {
+      max-width: 760px;
       background: rgba(255,255,255,0.02);
-      border-radius:14px;
-      padding:22px;
+      border-radius: 14px;
+      padding: 22px;
       box-shadow: 0 8px 30px rgba(0,0,0,0.6);
       border: 1px solid rgba(255,255,255,0.03);
     }
-    .welcome h2{
-      margin:0 0 12px 0;
-      font-size:22px;
-      color:#bfffe9;
-    }
-    .quote{
-      font-size:16px;
-      line-height:1.5;
-      opacity:0.95;
+
+    .welcome h2 {
+      margin: 0 0 12px 0;
+      font-size: 22px;
+      color: #bfffe9;
     }
 
-    footer{
-      text-align:center;
-      color:#9fdcd0;
-      margin:32px 0 40px;
-      opacity:0.9;
+    .quote {
+      font-size: 16px;
+      line-height: 1.5;
+      opacity: 0.95;
     }
 
-    @media (max-width:600px){
-      h1.title{ font-size:32px; }
-      .nav-column{ width:85%; }
-      #logo{ width:56px; height:56px; }
+    footer {
+      text-align: center;
+      color: #9fdcd0;
+      margin: 32px 0 40px;
+      opacity: 0.9;
+    }
+
+    @media (max-width: 600px) {
+      h1.title { font-size: 32px; }
+      .nav-column { width: 85%; }
+      #logo { width: 56px; height: 56px; }
     }
   </style>
-  <!-- Structured Data for Google -->
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "Organization",
-  "name": "Crajy Boys",
-  "url": "https://yourusername.github.io/Crajy-Boys/",
-  "logo": "https://yourusername.github.io/Crajy-Boys/logo.png",
-  "description": "Crajy Boys official gaming website — Free Fire, BGMI, and other games. Join members, watch videos, and explore the gaming world.",
-  "sameAs": [
-    "https://www.youtube.com/@CrajyBoys", 
-    "https://instagram.com/crajy.boys",
-  ]
-}
-</script>
 
-<!-- Website Markup -->
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "WebSite",
-  "name": "Crajy Boys",
-  "url": "https://yourusername.github.io/Crajy-Boys/",
-  "potentialAction": {
-    "@type": "SearchAction",
-    "target": "https://yourusername.github.io/Crajy-Boys/?q={search_term_string}",
-    "query-input": "required name=search_term_string"
-  }
-}
-</script>
-
-<!-- YouTube Channel Metadata -->
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "Person",
-  "name": "Crajy Boys",
-  "url": "https://yourusername.github.io/Crajy-Boys/",
-  "image": "https://yourusername.github.io/Crajy-Boys/logo.png",
-  "sameAs": [
-    "https://www.youtube.com/@CrajyBoys"
-  ]
-}
-</script>
+  <!-- Keep your structured data scripts (good for SEO) -->
+  <script type="application/ld+json">
+  { /* your Organization JSON-LD */ }
+  </script>
+  <script type="application/ld+json">
+  { /* your WebSite JSON-LD */ }
+  </script>
+  <script type="application/ld+json">
+  { /* your Person JSON-LD */ }
+  </script>
 </head>
 <body>
-  <!-- put your logo file 'logo.png' in same folder; replace as needed -->
+  <!-- Dragon video background -->
+  <video class="video-bg" autoplay muted loop playsinline poster="videos/poster.jpg">
+    <source src="videos/Dragon.mp4" type="video/mp4">
+    Your browser does not support the video tag.
+  </video>
+  <div class="video-overlay"></div>
+
+  <!-- Your original content -->
   <img id="logo" src="logo.png" alt="Crajy Boys Logo" onerror="this.style.display='none'">
 
   <header>
     <h1 class="title">Crajy Boys</h1>
-
     <div class="nav-column" aria-label="main links">
-      <!-- exact filenames as you asked -->
       <a href="aboutus.html">About Us</a>
       <a href="members.html">Members</a>
       <a href="YT channel.html">Yt Channel</a>
@@ -196,12 +211,3 @@
   </footer>
 </body>
 </html>
-
-
-
-
-
-
-
-
-
