@@ -25,7 +25,7 @@ init();
 // --------------------
 const PORT = process.env.PORT || 4000;
 const BASE_URL = process.env.BASE_URL || 'https://crajy-boys-t46o.onrender.com';
-
+const APP_PASSWORD = process.env.APP_PASSWORD;
 // --------------------
 // Health check (Render)
 // --------------------
