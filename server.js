@@ -37,34 +37,30 @@ app.get('/healthz', (_req, res) => {
 });
 
 // --------------------
+// --------------------
 // Email transporter
 // --------------------
-async function createTransporter() {
-  if (process.env.SMTP_HOST && process.env.SMTP_USER) {
-    return nodemailer.createTransport({
-      host: process.env.SMTP_HOST,
-      port: Number(process.env.SMTP_PORT || 587),
-      secure: process.env.SMTP_SECURE === 'true',
-      auth: {
-        user: process.env.SMTP_USER,
-        pass: process.env.SMTP_PASS
-      }
-    });
+const transporter = nodemailer.createTransport({
+  host: process.env.SMTP_HOST || "smtp.gmail.com",
+  port: Number(process.env.SMTP_PORT || 587),
+  secure: process.env.SMTP_SECURE === "true",
+  auth: {
+    user: process.env.SMTP_USER,
+    pass: process.env.SMTP_PASS,
+  },
+  tls: {
+    rejectUnauthorized: false,
+  },
+});
+
+// Check SMTP connection
+transporter.verify((error, success) => {
+  if (error) {
+    console.error("❌ SMTP Error:", error);
+  } else {
+    console.log("✅ SMTP Connected Successfully");
   }
-  // Fallback: Ethereal (dev only)
-  const testAccount = await nodemailer.createTestAccount();
-  console.warn('⚠️ SMTP not configured — using Ethereal test account');
-  return nodemailer.createTransport({
-    host: testAccount.smtp.host,
-    port: testAccount.smtp.port,
-    secure: testAccount.smtp.secure,
-    auth: {
-      user: testAccount.user,
-      pass: testAccount.pass
-    }
-  });
-}
-const transporterPromise = createTransporter();
+});
 
 // --------------------
 // Helpers
@@ -112,11 +108,11 @@ app.post('/register-init', async (req, res) => {
       );
     }
 
-    const transporter = await transporterPromise;
+   
     const verifyUrl = `${BASE_URL}/verify?token=${token}&email=${encodeURIComponent(cleanEmail)}`;
 
     const info = await transporter.sendMail({
-      from: process.env.EMAIL_FROM || 'no-reply@crajy-boys.local',
+      from: `"Crajy Boys" <${process.env.SMTP_USER}>`,
       to: cleanEmail,
       subject: 'Verify your email — Crajy Boys',
       html: `
